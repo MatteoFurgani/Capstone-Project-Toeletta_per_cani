@@ -9,7 +9,6 @@ import lombok.*;
 @Getter
 @Setter
 @ToString
-@AllArgsConstructor
 @NoArgsConstructor
 public class PetInfo {
     @Id
@@ -20,4 +19,8 @@ public class PetInfo {
     @Enumerated(EnumType.STRING)
     private HairType hairType;
 
+    public PetInfo(Size size, HairType hairType) {
+        this.size = size;
+        this.hairType = hairType;
+    }
 }

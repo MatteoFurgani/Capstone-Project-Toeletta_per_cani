@@ -15,7 +15,6 @@ import java.time.LocalTime;
 @Getter
 @Setter
 @ToString
-@AllArgsConstructor
 @NoArgsConstructor
 public class Reservation {
     @Id
@@ -29,5 +28,13 @@ public class Reservation {
     private ServiceType serviceName;
     @OneToOne
     private PetInfo petInfo;
+
+    public Reservation(LocalDate date, LocalTime time, ServiceType serviceName, PetInfo petInfo) {
+        this.date = date;
+        this.time = time;
+        this.cost = cost;
+        this.serviceName = serviceName;
+        this.petInfo = petInfo;
+    }
 
 }
