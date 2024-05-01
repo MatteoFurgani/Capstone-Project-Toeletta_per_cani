@@ -1,18 +1,14 @@
 package matteofurgani.Capstone.project.reservations;
 
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
-import matteofurgani.Capstone.project.pets.PetInfo;
-import matteofurgani.Capstone.project.servicesType.ServiceType;
+import lombok.Getter;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
 
-public record NewReservationDTO(@NotNull(message = "Date is required")
-                                LocalDate date,
-                                @NotNull(message = "Time is required")
-                                LocalTime time,
-                                @NotNull(message = "Service is required")
-                                int serviceId,
-                                @NotNull(message = "Pet is required")
-                                int petinfoId) {
-}
+public record NewReservationDTO(@NotNull(message = "Date is required") LocalDate date,
+                                @NotNull(message = "Time is required") LocalTime time,
+                                @NotEmpty(message = "Service is required") String serviceType,
+                                @NotNull(message = "Pet is required") Integer petInfoId
+) {}
