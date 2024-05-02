@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface ServiceTypeDAO extends JpaRepository<ServiceType, Integer> {
+public interface ServiceTypeDAO extends JpaRepository<ServiceType, String> {
 
     boolean existsByName(String name);
     Optional<ServiceType> findByName(String name);

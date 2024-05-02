@@ -12,6 +12,7 @@ import matteofurgani.Capstone.project.users.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.BindingResult;
@@ -26,6 +27,7 @@ public class ReservationController {
 
     @Autowired
     private ReservationService rs;
+
 
     @Autowired
     private ServiceTypeService typeService;
@@ -62,8 +64,14 @@ public class ReservationController {
 
     @PutMapping("/{reservationId}")
     @PreAuthorize("hasAuthority('ADMIN')")
-    public Reservation findByIdAndUpdate(@PathVariable int reservationId, @RequestBody Reservation body) {
-        return rs.findByIdAndUpdate(reservationId, body);
+    @ResponseStatus(HttpStatus.CREATED)
+    public Reservation findByIdAndUpdate(@PathVariable int reservationId, @RequestBody NewReservationDTO body) {
+        try{
+            rs.findByIdAndUpdate(reservationId, body);
+            return new ResponseEntity<Reservation>(HttpStatus.OK).getBody();
+        } catch (UserNotActiveException e){
+            return new ResponseEntity<Reservation>(HttpStatus.BAD_REQUEST).getBody();
+        }
     }
 
     @DeleteMapping("/{reservationId}")

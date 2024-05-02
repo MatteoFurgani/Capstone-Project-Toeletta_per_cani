@@ -25,6 +25,7 @@ public class ReservationService {
     @Autowired
     private ReservationDAO rd;
 
+
     @Autowired
     private PetInfoService petService;
 
@@ -68,25 +69,31 @@ public class ReservationService {
     }
 
 
-    public Reservation findByIdAndUpdate(int id, Reservation body){
-
-
+    public Reservation findByIdAndUpdate(int id, NewReservationDTO body){
         Reservation found = this.findById(id);
-        if (body.getDate() != null) {
-            found.setDate(body.getDate());
-        }
-        if (body.getTime() != null) {
-            found.setTime(body.getTime());
-        }
-        if (body.getServiceType() != null){
-           found.setServiceType(body.getServiceType());
-        }
-        if (body.getPetInfo() != null) {
-            PetInfo petInfo = petService.findById(body.getPetInfo().getId());
-            found.setPetInfo(petInfo);
-        }
+
+        found.setDate(body.date());
+        found.setTime(body.time());
+
+        // Trova il ServiceType corrispondente
+        ServiceType serviceType = typeService.findByName(body.serviceType());
+        found.setServiceType(serviceType);
+
+        // Trova il PetInfo corrispondente
+        PetInfo petInfo = petService.findById(body.petInfoId());
+        found.setPetInfo(petInfo);
+
+        // Calcola il costo basato sul ServiceType e sul PetInfo
+        Double cost = serviceType.getBaseCost();
+        String petSize = String.valueOf(petInfo.getSize());
+        String petHair = String.valueOf(petInfo.getHairType());
+
+        CostGenerator cg = new CostGenerator();
+        String finalCost = cg.generateProperCost(petHair, petSize, cost);
+        found.setCost(finalCost);
 
         return rd.save(found);
+
     }
 
 
