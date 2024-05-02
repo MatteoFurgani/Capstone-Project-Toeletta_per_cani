@@ -25,8 +25,10 @@ public class PetInfo {
     @JsonIgnore
     private List<Reservation> reservation;
 
+
     public PetInfo(Size size, HairType hairType) {
         this.size = size;
         this.hairType = hairType;
     }
+
 }

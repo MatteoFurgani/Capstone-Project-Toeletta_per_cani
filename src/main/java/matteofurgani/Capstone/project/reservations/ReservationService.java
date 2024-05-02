@@ -58,6 +58,7 @@ public class ReservationService {
     }
 
     public Reservation findById(int id) {
+
         return rd.findById(id).orElseThrow(() -> new NotFoundException(id));
     }
 
@@ -66,13 +67,9 @@ public class ReservationService {
                 orElseThrow(() -> new NotFoundException("Reservation not found for date: " + date + " and time: " + time));
     }
 
+
     public Reservation findByIdAndUpdate(int id, Reservation body){
-        /*Reservation found = this.findById(id);
-        found.setDate(body.getDate());
-        found.setTime(body.getTime());
-        found.setServiceType(body.getServiceType());
-        found.setPetInfo(body.getPetInfo());
-        return null;*/
+
 
         Reservation found = this.findById(id);
         if (body.getDate() != null) {
@@ -84,8 +81,9 @@ public class ReservationService {
         if (body.getServiceType() != null){
            found.setServiceType(body.getServiceType());
         }
-        if (body.getPetInfo() != null){
-            found.setPetInfo(body.getPetInfo());
+        if (body.getPetInfo() != null) {
+            PetInfo petInfo = petService.findById(body.getPetInfo().getId());
+            found.setPetInfo(petInfo);
         }
 
         return rd.save(found);
