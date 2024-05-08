@@ -2,6 +2,8 @@ package matteofurgani.Capstone.project.users;
 
 import matteofurgani.Capstone.project.exceptions.BadRequestException;
 import matteofurgani.Capstone.project.exceptions.NotFoundException;
+import matteofurgani.Capstone.project.reservations.Reservation;
+import matteofurgani.Capstone.project.reservations.ReservationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -20,6 +22,9 @@ public class UserService {
 
     @Autowired
     private PasswordEncoder bcrypt;
+
+    @Autowired
+    private ReservationService rs;
 
     public User save(NewUserDTO body) throws IOException{
         userDAO.findByEmail(body.email()).ifPresent(
@@ -77,6 +82,15 @@ public class UserService {
     public void findByIdAndDelete(int id) {
         User found = this.findById(id);
         userDAO.delete(found);
+    }
+
+    public User addUserReservation(int userId, int reservationId) {
+        User user = userDAO.findById(userId).orElseThrow(() -> new NotFoundException("User not found with id: " + userId));
+        Reservation reservation = rs.findById(reservationId);
+
+        user.getReservations().add(reservation);
+        userDAO.save(user);
+        return userDAO.save(user);
     }
 
 

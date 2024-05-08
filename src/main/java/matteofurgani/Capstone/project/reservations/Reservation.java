@@ -1,14 +1,17 @@
 package matteofurgani.Capstone.project.reservations;
 
 
+import com.fasterxml.jackson.annotation.JacksonInject;
 import jakarta.persistence.*;
 import lombok.*;
 import matteofurgani.Capstone.project.pets.PetInfo;
 import matteofurgani.Capstone.project.servicesType.ServiceType;
+import matteofurgani.Capstone.project.users.User;
 
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.Collection;
 
 
 @Entity
@@ -37,6 +40,5 @@ public class Reservation {
         this.serviceType = serviceType;
         this.petInfo = petInfo;
     }
-
 
 }

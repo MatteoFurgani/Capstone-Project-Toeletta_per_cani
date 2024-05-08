@@ -40,7 +40,6 @@ public class User implements UserDetails {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "reservation_id")
     )
-    @JsonIgnore
     private List<Reservation> reservations;
 
    public User (String firstName, String lastName, String email, String password, String phone) {

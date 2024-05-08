@@ -1,5 +1,6 @@
 package matteofurgani.Capstone.project.users;
 
+import matteofurgani.Capstone.project.exceptions.NotFoundException;
 import matteofurgani.Capstone.project.exceptions.UserNotActiveException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -80,6 +81,12 @@ public class UserController {
         }
         userService.findByIdAndDelete(currentUser.getId());
         return ResponseEntity.ok("User deleted");
+    }
+
+    @PostMapping("/{userId}/{reservationId}")
+    public User addUserReservation(@PathVariable int userId, @PathVariable int reservationId) {
+        User user = userService.findById(userId);
+        return userService.addUserReservation(userId, reservationId);
     }
 
 }
