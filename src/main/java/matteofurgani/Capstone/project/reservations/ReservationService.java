@@ -7,6 +7,7 @@ import matteofurgani.Capstone.project.pets.PetInfoService;
 import matteofurgani.Capstone.project.servicesType.ServiceType;
 import matteofurgani.Capstone.project.servicesType.ServiceTypeService;
 import matteofurgani.Capstone.project.users.User;
+import matteofurgani.Capstone.project.users.UserDAO;
 import matteofurgani.Capstone.project.users.UserService;
 import matteofurgani.Capstone.project.utility.costs.CostGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +35,9 @@ public class ReservationService {
 
     @Autowired
     private ServiceTypeService typeService;
+
+    @Autowired
+    private UserDAO userDAO;
 
     public Reservation save(NewReservationDTO body) throws IOException{
 

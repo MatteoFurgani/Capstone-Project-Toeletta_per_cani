@@ -34,7 +34,7 @@ public class User implements UserDetails {
     private Role roleName;
     private boolean isActive;
 
-   @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
             name = "user_reservation",
             joinColumns = @JoinColumn(name = "user_id"),

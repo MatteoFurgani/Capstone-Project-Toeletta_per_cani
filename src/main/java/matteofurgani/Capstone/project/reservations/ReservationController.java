@@ -33,7 +33,6 @@ public class ReservationController {
 
 
     @PostMapping
-    @PreAuthorize("hasAuthority('ADMIN')")
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity save(@RequestBody @Validated NewReservationDTO body, BindingResult validation) throws IOException {
         if (validation.hasErrors()) {
@@ -43,7 +42,6 @@ public class ReservationController {
             Reservation reservation = rs.save(body);
             return ResponseEntity.status(HttpStatus.CREATED).body(new NewReservationRespDTO(reservation.getId()));
         } catch (InvalidDateException e) {
-            // Gestisci l'eccezione InvalidDateException qui
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
     }
