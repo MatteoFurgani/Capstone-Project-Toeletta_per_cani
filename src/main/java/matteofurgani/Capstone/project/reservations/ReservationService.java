@@ -2,8 +2,8 @@ package matteofurgani.Capstone.project.reservations;
 
 import matteofurgani.Capstone.project.exceptions.InvalidDateException;
 import matteofurgani.Capstone.project.exceptions.NotFoundException;
-import matteofurgani.Capstone.project.pets.PetInfo;
-import matteofurgani.Capstone.project.pets.PetInfoService;
+import matteofurgani.Capstone.project.petsInfo.PetInfo;
+import matteofurgani.Capstone.project.petsInfo.PetInfoService;
 import matteofurgani.Capstone.project.servicesType.ServiceType;
 import matteofurgani.Capstone.project.servicesType.ServiceTypeService;
 import matteofurgani.Capstone.project.users.User;
@@ -20,8 +20,6 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.List;
-import java.util.Optional;
 
 @Service
 public class ReservationService {
@@ -37,9 +35,9 @@ public class ReservationService {
     private ServiceTypeService typeService;
 
     @Autowired
-    private UserDAO userDAO;
+    private UserService userService;
 
-    public Reservation save(NewReservationDTO body) throws IOException{
+    public Reservation show(NewReservationDTO body, int userId) throws IOException{
 
         boolean isValidDate = checkDate(body.date());
         if(!isValidDate){
@@ -53,6 +51,7 @@ public class ReservationService {
 
         ServiceType serviceType = typeService.findByName(String.valueOf(body.serviceType()));
         PetInfo petInfo = petService.findById(body.petInfoId());
+        User user = userService.findById(userId);
 
         Double cost = serviceType.getBaseCost();
         String petSize = String.valueOf(petInfo.getSize());
@@ -61,14 +60,21 @@ public class ReservationService {
         CostGenerator cg = new CostGenerator();
         String finalCost = cg.generateProperCost(petHair,petSize, cost);
 
-        Reservation reservation = new Reservation(body.date(), body.time(), serviceType, petInfo);
+        Reservation reservation = new Reservation(body.date(), body.time(), serviceType, petInfo, user);
         reservation.setDate(body.date());
         reservation.setTime(body.time());
         reservation.setServiceType(serviceType);
         reservation.setPetInfo(petInfo);
         reservation.setCost(finalCost);
+        reservation.setUser(user);
 
-        return rd.save(reservation);
+        return reservation;
+
+       /* return rd.save(reservation);*/
+    }
+
+    public Reservation save(NewReservationDTO body, int id) throws IOException {
+        return rd.save(show(body, id));
     }
 
     public boolean isReservationExists(LocalDate date, LocalTime time){
@@ -133,12 +139,38 @@ public class ReservationService {
     }
 
 
-    public Reservation findByDateAndTimeAndUpdate(LocalDate date, LocalTime time, Reservation body) {
+    /*public Reservation findByDateAndTimeAndUpdate(LocalDate date, LocalTime time, Reservation body) {
         Reservation found = this.findByDateAndTime(date, time);
         found.setDate(body.getDate());
         found.setTime(body.getTime());
         found.setServiceType(body.getServiceType());
         found.setPetInfo(body.getPetInfo());
+        return rd.save(found);
+    }*/
+
+    public Reservation findByDateAndTimeAndUpdate(LocalDate date, LocalTime time, NewReservationDTO body) {
+        Reservation found = this.findByDateAndTime(date, time);
+
+        // Aggiorna la data e l'ora della prenotazione con i valori forniti nel corpo
+        found.setDate(body.date());
+        found.setTime(body.time());
+
+        // Trova il ServiceType corrispondente
+        ServiceType serviceType = typeService.findByName(body.serviceType());
+        found.setServiceType(serviceType);
+        double cost = serviceType.getBaseCost();
+
+        // Trova il PetInfo corrispondente
+        PetInfo petInfo = petService.findById(body.petInfoId());
+        found.setPetInfo(petInfo);
+
+        // Calcola il costo basato sul ServiceType e sul PetInfo
+        String petSize = String.valueOf(petInfo.getSize());
+        String petHair = String.valueOf(petInfo.getHairType());
+        CostGenerator cg = new CostGenerator();
+        String finalCost = cg.generateProperCost(petHair, petSize, cost);
+        found.setCost(finalCost);
+
         return rd.save(found);
     }
 

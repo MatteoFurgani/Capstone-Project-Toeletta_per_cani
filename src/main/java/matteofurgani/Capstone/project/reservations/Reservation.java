@@ -1,17 +1,15 @@
 package matteofurgani.Capstone.project.reservations;
 
 
-import com.fasterxml.jackson.annotation.JacksonInject;
 import jakarta.persistence.*;
 import lombok.*;
-import matteofurgani.Capstone.project.pets.PetInfo;
+import matteofurgani.Capstone.project.petsInfo.PetInfo;
 import matteofurgani.Capstone.project.servicesType.ServiceType;
 import matteofurgani.Capstone.project.users.User;
 
 
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.Collection;
 
 
 @Entity
@@ -33,12 +31,19 @@ public class Reservation {
     @JoinColumn(name = "pet_info_id", referencedColumnName = "id")
     private PetInfo petInfo;
 
-    public Reservation(LocalDate date, LocalTime time, ServiceType serviceType, PetInfo petInfo) {
+    @ManyToOne
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    private User user;
+
+
+
+   public Reservation(LocalDate date, LocalTime time, ServiceType serviceType, PetInfo petInfo, User user) {
         this.date = date;
         this.time = time;
         this.cost = cost;
         this.serviceType = serviceType;
         this.petInfo = petInfo;
+        this.user = user;
     }
 
 }

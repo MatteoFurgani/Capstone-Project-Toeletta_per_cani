@@ -34,13 +34,18 @@ public class User implements UserDetails {
     private Role roleName;
     private boolean isActive;
 
-    @ManyToMany(cascade = CascadeType.ALL)
+
+    @OneToMany(mappedBy = "user")
+    @JsonIgnore
+    private List<Reservation> reservations;
+
+   /* @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
             name = "user_reservation",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "reservation_id")
     )
-    private List<Reservation> reservations;
+    private List<Reservation> reservations;*/
 
    public User (String firstName, String lastName, String email, String password, String phone) {
        this.firstName = firstName;

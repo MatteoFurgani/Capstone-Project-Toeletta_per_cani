@@ -1,4 +1,4 @@
-package matteofurgani.Capstone.project.pets;
+package matteofurgani.Capstone.project.petsInfo;
 
 import matteofurgani.Capstone.project.exceptions.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,7 +9,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.util.Optional;
 
 @Service
 public class PetInfoService {

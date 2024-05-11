@@ -83,10 +83,10 @@ public class UserController {
         return ResponseEntity.ok("User deleted");
     }
 
-    @PostMapping("/{userId}/{reservationId}")
+   /* @PostMapping("/{userId}/{reservationId}")
     public User addUserReservation(@PathVariable int userId, @PathVariable int reservationId) {
         User user = userService.findById(userId);
         return userService.addUserReservation(userId, reservationId);
-    }
+    }*/
 
 }

@@ -3,8 +3,9 @@ package matteofurgani.Capstone.project.reservations;
 import matteofurgani.Capstone.project.exceptions.BadRequestException;
 import matteofurgani.Capstone.project.exceptions.InvalidDateException;
 import matteofurgani.Capstone.project.exceptions.UserNotActiveException;
-import matteofurgani.Capstone.project.pets.PetInfoService;
+import matteofurgani.Capstone.project.petsInfo.PetInfoService;
 import matteofurgani.Capstone.project.servicesType.ServiceTypeService;
+import matteofurgani.Capstone.project.users.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -16,6 +17,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.time.LocalDate;
 
 @RestController
 @RequestMapping("/reservations")
@@ -32,18 +34,27 @@ public class ReservationController {
     private PetInfoService petService;
 
 
-    @PostMapping
+    @PostMapping("/me/save")
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity save(@RequestBody @Validated NewReservationDTO body, BindingResult validation) throws IOException {
+    public ResponseEntity save(@AuthenticationPrincipal User user, @RequestBody @Validated NewReservationDTO body, BindingResult validation) throws IOException {
         if (validation.hasErrors()) {
             throw new BadRequestException(validation.getAllErrors());
         }
         try {
-            Reservation reservation = rs.save(body);
+            Reservation reservation = rs.save(body, user.getId());
             return ResponseEntity.status(HttpStatus.CREATED).body(new NewReservationRespDTO(reservation.getId()));
         } catch (InvalidDateException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
+    }
+
+    @PostMapping("/me/show")
+    @ResponseStatus(HttpStatus.CREATED)
+    public Reservation show(@AuthenticationPrincipal User user, @RequestBody @Validated NewReservationDTO body, BindingResult validation) throws IOException {
+        if (validation.hasErrors()) {
+            throw new BadRequestException(validation.getAllErrors());
+        }
+        return rs.show(body, user.getId());
     }
 
     @GetMapping
@@ -85,8 +96,13 @@ public class ReservationController {
     }
 
     @PutMapping("/me/update/{date}/{time}")
-    public Reservation updateReservation (@AuthenticationPrincipal Reservation currentReservation, @RequestBody Reservation reservation) {
-        return rs.findByDateAndTimeAndUpdate(currentReservation.getDate(), currentReservation.getTime(), reservation);
+    public Reservation updateReservation (@AuthenticationPrincipal Reservation currentReservation, @RequestBody NewReservationDTO reservation) {
+        try{
+            rs.findByDateAndTimeAndUpdate(currentReservation.getDate(), currentReservation.getTime(), reservation);
+            return new ResponseEntity<Reservation>(HttpStatus.OK).getBody();
+        } catch (UserNotActiveException e) {
+            return new ResponseEntity<Reservation>(HttpStatus.BAD_REQUEST).getBody();
+        }
     }
 
     @DeleteMapping("/me/delete/{date}/{time}")

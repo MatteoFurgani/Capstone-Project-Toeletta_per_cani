@@ -1,4 +1,4 @@
-package matteofurgani.Capstone.project.pets;
+package matteofurgani.Capstone.project.petsInfo;
 
 import matteofurgani.Capstone.project.exceptions.BadRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +18,6 @@ public class PetInfoController {
     private PetInfoService petService;
 
     @PostMapping("")
-    @PreAuthorize("hasAuthority('ADMIN')")
     @ResponseStatus(HttpStatus.CREATED)
     public NewPetInfoRespDTO save(@RequestBody NewPetInfoDTO body, BindingResult validation) throws IOException {
 
@@ -40,7 +39,6 @@ public class PetInfoController {
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasAuthority('ADMIN')")
     public PetInfo findById(@PathVariable int id) {
         return petService.findById(id);
     }

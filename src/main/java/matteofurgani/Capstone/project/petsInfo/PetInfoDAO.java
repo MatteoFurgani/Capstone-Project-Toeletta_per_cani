@@ -1,4 +1,4 @@
-package matteofurgani.Capstone.project.pets;
+package matteofurgani.Capstone.project.petsInfo;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
