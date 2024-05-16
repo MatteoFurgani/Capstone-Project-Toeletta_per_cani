@@ -94,6 +94,11 @@ public class ReservationService {
         return rd.findAll(pageable);
     }
 
+    public Page<Reservation> getMyReservations(int userId, int page, int size, String sort) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sort));
+        return rd.findByUserId(userId, pageable);
+    }
+
     public Reservation findById(int id) {
 
         return rd.findById(id).orElseThrow(() -> new NotFoundException(id));

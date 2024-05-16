@@ -90,6 +90,15 @@ public class ReservationController {
         rs.findByIdAndDelete(reservationId);
     }
 
+    @GetMapping("/me")
+    public ResponseEntity<Page<Reservation>> getMyReservations(@AuthenticationPrincipal User user,
+                                                               @RequestParam(defaultValue = "0") int page,
+                                                               @RequestParam(defaultValue = "10") int size,
+                                                               @RequestParam(defaultValue = "id") String sort) {
+        Page<Reservation> reservations = rs.getMyReservations(user.getId(), page, size, sort);
+        return ResponseEntity.ok().body(reservations);
+    }
+
     @GetMapping("/me/{date}/{time}")
     public Reservation getReservation(@AuthenticationPrincipal Reservation currentReservation) {
        return rs.findByDateAndTime(currentReservation.getDate(), currentReservation.getTime());
