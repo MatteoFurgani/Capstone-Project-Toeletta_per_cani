@@ -21,6 +21,9 @@ public class CostGenerator {
      */
     public String generateProperCost(String hairType, String size, double serviceBaseCost) {
 
+        double ADDENDUM_MEDIUM_HAIR = serviceBaseCost * 0.50;
+        double ADDENDUM_LONG_HAIR = serviceBaseCost * 0.75;
+
         switch (size) {
 
             case "S":
@@ -28,9 +31,9 @@ public class CostGenerator {
                 if ("SHORT".equals(hairType)) {
                     return formatCosto(serviceBaseCost);
                 } else if ("MEDIUM".equals(hairType)) {
-                    return formatCosto(serviceBaseCost + ServiceConstants.ADDENDUM_MEDIUM_HAIR);
+                    return formatCosto(serviceBaseCost + ADDENDUM_MEDIUM_HAIR);
                 } else if ("LONG".equals(hairType)) {
-                    return formatCosto(serviceBaseCost + ServiceConstants.ADDENDUM_LONG_HAIR);
+                    return formatCosto(serviceBaseCost + ADDENDUM_LONG_HAIR);
                 }
 
                 break;
@@ -40,9 +43,9 @@ public class CostGenerator {
                 if ("SHORT".equals(hairType)) {
                     return formatCosto(serviceBaseCost * ServiceConstants.MULTIPLIER_M);
                 } else if ("MEDIUM".equals(hairType)) {
-                    return formatCosto((serviceBaseCost * ServiceConstants.MULTIPLIER_M) + ServiceConstants.ADDENDUM_MEDIUM_HAIR);
+                    return formatCosto((serviceBaseCost * ServiceConstants.MULTIPLIER_M) + ADDENDUM_MEDIUM_HAIR);
                 } else if ("LONG".equals(hairType)){
-                    return formatCosto((serviceBaseCost * ServiceConstants.MULTIPLIER_M) + ServiceConstants.ADDENDUM_LONG_HAIR);
+                    return formatCosto((serviceBaseCost * ServiceConstants.MULTIPLIER_M) + ADDENDUM_LONG_HAIR);
                 }
                 break;
 
@@ -51,9 +54,9 @@ public class CostGenerator {
                 if ("SHORT".equals(hairType)) {
                     return formatCosto(serviceBaseCost * ServiceConstants.MULTIPLIER_L);
                 } else if ("MEDIUM".equals(hairType)) {
-                    return formatCosto((serviceBaseCost * ServiceConstants.MULTIPLIER_L) + ServiceConstants.ADDENDUM_MEDIUM_HAIR);
+                    return formatCosto((serviceBaseCost * ServiceConstants.MULTIPLIER_L) + ADDENDUM_MEDIUM_HAIR);
                 } else if ("LONG".equals(hairType)){
-                    return formatCosto((serviceBaseCost * ServiceConstants.MULTIPLIER_L) + ServiceConstants.ADDENDUM_LONG_HAIR);
+                    return formatCosto((serviceBaseCost * ServiceConstants.MULTIPLIER_L) + ADDENDUM_LONG_HAIR);
                 }
                 break;
 
@@ -62,9 +65,9 @@ public class CostGenerator {
                 if ("SHORT".equals(hairType)) {
                     return formatCosto(serviceBaseCost * ServiceConstants.MULTIPLIER_XL);
                 } else if ("MEDIUM".equals(hairType)) {
-                    return formatCosto((serviceBaseCost * ServiceConstants.MULTIPLIER_XL) + ServiceConstants.ADDENDUM_MEDIUM_HAIR);
+                    return formatCosto((serviceBaseCost * ServiceConstants.MULTIPLIER_XL) + ADDENDUM_MEDIUM_HAIR);
                 } else if ("LONG".equals(hairType)){
-                    return formatCosto((serviceBaseCost * ServiceConstants.MULTIPLIER_XL) + ServiceConstants.ADDENDUM_LONG_HAIR);
+                    return formatCosto((serviceBaseCost * ServiceConstants.MULTIPLIER_XL) + ADDENDUM_LONG_HAIR);
                 }
                 break;
 

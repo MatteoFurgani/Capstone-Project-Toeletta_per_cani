@@ -83,10 +83,9 @@ public class ReservationController {
         }
     }
 
-    @DeleteMapping("/{reservationId}")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @DeleteMapping("/me/reservations/{reservationId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void findByIdAndDelete(@PathVariable int reservationId) {
+    public void deleteReservation(@PathVariable int reservationId) {
         rs.findByIdAndDelete(reservationId);
     }
 
